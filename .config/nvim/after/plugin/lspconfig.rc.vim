@@ -86,7 +86,7 @@ nvim_lsp.flow.setup {
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
-  filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "typescript.tsx"},
+  filetypes = {"typescript", "typescriptreact", "typescript.tsx"},
   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
