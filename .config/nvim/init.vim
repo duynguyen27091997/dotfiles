@@ -96,8 +96,11 @@ au BufNewFile,BufRead *.es6 setf javascript
 au BufNewFile,BufRead *.tsx setf typescriptreact
 " Markdown
 au BufNewFile,BufRead *.md set filetype=markdown
+au BufNewFile,BufRead *.mdx set filetype=markdown
 " Flow
 au BufNewFile,BufRead *.flow set filetype=javascript
+" Fish
+au BufNewFile,BufRead *.fish set filetype=fish
 
 set suffixesadd=.js,.es,.jsx,.json,.css,.less,.sass,.styl,.php,.py,.md
 
@@ -134,7 +137,7 @@ if exists("&termguicolors") && exists("&winblend")
   set background=dark
   " Use NeoSolarized
   let g:neosolarized_termtrans=1
-  let g:defx_icons_column_length = 10
+  let g:defx_icons_column_length = 3
   runtime ./colors/NeoSolarized.vim
   colorscheme NeoSolarized
 endif
