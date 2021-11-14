@@ -161,6 +161,16 @@ nvim_lsp.diagnosticls.setup {
   }
 }
 
+nvim_lsp.html.setup {
+  capabilities = capabilities,
+}
+
+nvim_lsp.cssls.setup {
+  capabilities = capabilities,
+}
+
+nvim_lsp.tailwindcss.setup{}
+
 -- icon
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
