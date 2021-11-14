@@ -42,16 +42,13 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
   -- formatting
-  if client.name == 'tsserver' then
-    client.resolved_capabilities.document_formatting = false
-  end
-
   if client.resolved_capabilities.document_formatting then
     vim.api.nvim_command [[augroup Format]]
     vim.api.nvim_command [[autocmd! * <buffer>]]
     vim.api.nvim_command [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
     vim.api.nvim_command [[augroup END]]
   end
+
 
   --protocol.SymbolKind = { }
   protocol.CompletionItemKind = {
@@ -83,26 +80,19 @@ local on_attach = function(client, bufnr)
   }
 end
 
-
--- Set up completion using nvim_cmp with LSP source
-local capabilities = require('cmp_nvim_lsp').update_capabilities(
-  vim.lsp.protocol.make_client_capabilities()
-)
-
 nvim_lsp.flow.setup {
-  on_attach = on_attach,
-  capabilities = capabilities
+  on_attach = on_attach
 }
 
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
-  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-  capabilities = capabilities
+  filetypes = {"typescript", "typescriptreact", "typescript.tsx"},
+  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 }
 
 nvim_lsp.diagnosticls.setup {
   on_attach = on_attach,
-  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc' },
+  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc', 'html' },
   init_options = {
     linters = {
       eslint = {
@@ -135,39 +125,42 @@ nvim_lsp.diagnosticls.setup {
     formatters = {
       eslint_d = {
         command = 'eslint_d',
-        rootPatterns = { '.git' },
         args = { '--stdin', '--stdin-filename', '%filename', '--fix-to-stdout' },
         rootPatterns = { '.git' },
       },
       prettier = {
-        command = 'prettier_d_slim',
-        rootPatterns = { '.git' },
-        -- requiredFiles: { 'prettier.config.js' },
-        args = { '--stdin', '--stdin-filepath', '%filename' }
+        command = 'prettier',
+        args = { '--stdin-filepath', '%filename' }
       }
     },
     formatFiletypes = {
+      html = 'prettier',
       css = 'prettier',
-      javascript = 'prettier',
-      javascriptreact = 'prettier',
+      javascript = 'eslint_d',
+      javascriptreact = 'eslint_d',
       json = 'prettier',
       scss = 'prettier',
       less = 'prettier',
-      typescript = 'prettier',
-      typescriptreact = 'prettier',
+      typescript = 'eslint_d',
+      typescriptreact = 'eslint_d',
       json = 'prettier',
       markdown = 'prettier',
     }
   }
 }
 
+
+--Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 nvim_lsp.html.setup {
-  capabilities = capabilities,
-}
+    capabilities = capabilities,
+  }
 
 nvim_lsp.cssls.setup {
   capabilities = capabilities,
-}
+  }
 
 nvim_lsp.tailwindcss.setup{}
 
