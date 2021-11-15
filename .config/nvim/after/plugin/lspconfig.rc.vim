@@ -102,7 +102,7 @@ nvim_lsp.tsserver.setup {
 
 nvim_lsp.diagnosticls.setup {
   on_attach = on_attach,
-  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc', 'html' },
+  filetypes = { 'javascript', 'javascriptreact', 'json', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'markdown', 'pandoc' },
   init_options = {
     linters = {
       eslint = {
@@ -140,14 +140,13 @@ nvim_lsp.diagnosticls.setup {
         rootPatterns = { '.git' },
       },
       prettier = {
-        command = 'prettier',
+        command = 'prettier_d_slim',
         rootPatterns = { '.git' },
         -- requiredFiles: { 'prettier.config.js' },
-        args = { '--stdin-filepath', '%filename' }
+        args = { '--stdin', '--stdin-filepath', '%filename' }
       }
     },
     formatFiletypes = {
-      html = 'prettier',
       css = 'prettier',
       javascript = 'prettier',
       javascriptreact = 'prettier',
@@ -160,6 +159,18 @@ nvim_lsp.diagnosticls.setup {
       markdown = 'prettier',
     }
   }
+}
+
+-- Enable (broadcasting) snippet capability for completion
+local extractcapabilities = vim.lsp.protocol.make_client_capabilities()
+extractcapabilities.textDocument.completion.completionItem.snippetSupport = true
+
+nvim_lsp.html.setup {
+  capabilities = extractcapabilities,
+}
+
+nvim_lsp.cssls.setup{
+   capabilities = extractcapabilities,
 }
 
 -- icon
