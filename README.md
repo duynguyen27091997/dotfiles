@@ -1,5 +1,5 @@
 # dotfiles
 
 ```
-npm install -g neovim typescript-language-server typescript vscode-langservers-extracted
+sudo npm install -g diagnostic-languageserver typescript-language-server typescript vscode-langservers-extracted eslint_d prettier 
 ```
