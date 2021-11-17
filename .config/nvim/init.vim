@@ -8,6 +8,11 @@ scriptencoding utf-8
 " stop loading config if it's on tiny or small
 if !1 | finish | endif
 
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+
 set nocompatible
 set number
 syntax enable
